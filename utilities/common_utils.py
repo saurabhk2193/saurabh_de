@@ -1,10 +1,10 @@
-from pyspark.sql import SparkSession
-from pyspark.sql.types import StructType,StructField, StringType, IntegerType,BooleanType,DoubleType
+import logging
 import os
 import shutil
-from pyspark.sql.functions import col, expr, lit, udf, length, when, current_timestamp, concat
 
-import logging
+from pyspark.sql import SparkSession
+from pyspark.sql.types import StructType, StructField, StringType
+
 
 # Function to create Spark Session
 
@@ -39,28 +39,25 @@ def write_to_csv(output_path, df_final, filename="output"):
     list1 = os.listdir(output_path)
     for name in list1:
         if name.endswith(".csv"):
-            src = output_path+"\\"+name
-            os.rename(src, "output\\task_output\\"+filename+".csv")
+            src = output_path + "\\" + name
+            os.rename(src, "output\\task_output\\" + filename + ".csv")
             print(src)
     shutil.rmtree(output_path)
 
 
-def extract_data(spark,schema, in_path):
+def extract_data(spark, schema, in_path):
     src_input = spark.read.schema(schema).json(in_path + "recipes*.json")
     return src_input
 
 
 j_schema = StructType([
-        StructField("name", StringType()),
-        StructField("ingredients", StringType()),
-        StructField("url", StringType()),
-        StructField("image", StringType()),
-        StructField("cookTime", StringType()),
-        StructField("recipeYield", StringType()),
-        StructField("datePublished", StringType()),
-        StructField("prepTime", StringType()),
-        StructField("description", StringType())
-    ])
-
-
-
+    StructField("name", StringType()),
+    StructField("ingredients", StringType()),
+    StructField("url", StringType()),
+    StructField("image", StringType()),
+    StructField("cookTime", StringType()),
+    StructField("recipeYield", StringType()),
+    StructField("datePublished", StringType()),
+    StructField("prepTime", StringType()),
+    StructField("description", StringType())
+])

@@ -22,11 +22,11 @@ if __name__ == '__main__':
     logger.info('pre-processing source data....')
     prc_src = pre_process_data(src_input)
 
-    logger.info('count before filter : '+str(prc_src.count()))
+    logger.info('count before filter : ' + str(prc_src.count()))
     logger.info('filtering data....')
     df_filter = filter_data(prc_src)
 
-    logger.info('count after filter : '+str(df_filter.count()))
+    logger.info('count after filter : ' + str(df_filter.count()))
     logger.info('data transform starts....')
     df_final = transform_data(df_filter)
     logger.info('data transform ends....')
@@ -37,5 +37,3 @@ if __name__ == '__main__':
     write_to_csv(out_path, df_final, out_filename)
 
     logger.info('main program ends....')
-
-
