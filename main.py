@@ -5,7 +5,7 @@ import pyspark.sql.functions as F
 import os
 import shutil
 
-
+# Initializing logger for logging
 logger = get_logger('MainProg')
 
 in_path = "input\\"
@@ -13,10 +13,6 @@ out_filename = "output"
 out_path = "output\\task_output\\out.csv"
 
 if __name__ == '__main__':
-    #sp_util = PysparkUtils()
-
-    # Initializing logger for logging
-
     logger.info('main program starts....')
     # print('PyCharm')
     logger.info('creating spark session....')

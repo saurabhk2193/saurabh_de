@@ -4,11 +4,6 @@ from utilities.etl_job import *
 import pyspark.sql.functions as F
 
 
-def extract_data(spark,schema, in_path):
-    src_input = spark.read.schema(schema).json(in_path + "recipes*.json")
-    return src_input
-
-
 def pre_process_data(src_input):
     prc_src = src_input.withColumn("ingredients", regexp_replace("ingredients", "[\\r\\n]", ". ")) \
         .withColumn("recipeYield", regexp_replace("recipeYield", "[\\r\\n]", ". ")) \

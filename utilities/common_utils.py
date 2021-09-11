@@ -45,6 +45,11 @@ def write_to_csv(output_path, df_final, filename="output"):
     shutil.rmtree(output_path)
 
 
+def extract_data(spark,schema, in_path):
+    src_input = spark.read.schema(schema).json(in_path + "recipes*.json")
+    return src_input
+
+
 j_schema = StructType([
         StructField("name", StringType()),
         StructField("ingredients", StringType()),
