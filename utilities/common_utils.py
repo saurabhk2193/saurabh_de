@@ -1,10 +1,10 @@
-from pyspark.sql import SparkSession
-from pyspark.sql.types import StructType,StructField, StringType, IntegerType,BooleanType,DoubleType
+import logging
 import os
 import shutil
-from pyspark.sql.functions import col, expr, lit, udf, length, when, current_timestamp, concat
 
-import logging
+from pyspark.sql import SparkSession
+from pyspark.sql.types import StructType, StructField, StringType
+
 
 # Function to create Spark Session
 
@@ -13,12 +13,12 @@ def create_spark_session():
     spark = SparkSession.builder.master("local").appName("spark_de_test").getOrCreate()
     return spark
 
-# Utility function to handle logs
+    # Utility function to handle logs
 
 
-def get_logger(prog_name):
+def get_logger(prg_name):
     # create logger
-    logger = logging.getLogger(prog_name)
+    logger = logging.getLogger(prg_name)
     logger.setLevel(logging.DEBUG)
     # create console handler and set level to debug
     ch = logging.StreamHandler()
@@ -31,7 +31,7 @@ def get_logger(prog_name):
     logger.addHandler(ch)
     return logger
 
-# JSON schema definition
+    # JSON schema definition
 
 
 def write_to_csv(output_path, df_final, filename="output"):
@@ -39,10 +39,15 @@ def write_to_csv(output_path, df_final, filename="output"):
     list1 = os.listdir(output_path)
     for name in list1:
         if name.endswith(".csv"):
-            src = output_path+"\\"+name
-            os.rename(src, "output\\task_output\\"+filename+".csv")
+            src = output_path + "\\" + name
+            os.rename(src, "output\\task_output\\" + filename + ".csv")
             print(src)
     shutil.rmtree(output_path)
+
+
+def extract_data(spark, schema, in_path):
+    src_input = spark.read.schema(schema).json(in_path + "recipes*.json")
+    return src_input
 
 
 j_schema = StructType([
