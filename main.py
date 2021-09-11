@@ -1,5 +1,6 @@
 from pyspark.sql.functions import regexp_replace, col, lower, expr, avg, round
 from utilities.common_utils import *
+from utilities.etl_job import *
 import pyspark.sql.functions as F
 import os
 import shutil
@@ -12,19 +13,20 @@ out_filename = "output"
 out_path = "output\\task_output\\out.csv"
 
 if __name__ == '__main__':
-    sp_util = PysparkUtils()
+    #sp_util = PysparkUtils()
 
     # Initializing logger for logging
-    logger = sp_util.get_logger('MainProg')
+    logger = get_logger('MainProg')
 
     logger.info('main program starts....')
     print('PyCharm')
 
 
 
-    spark = sp_util.create_spark_session()
+    spark = create_spark_session()
 
-    src_input = spark.read.schema(sp_util.j_schema).json(in_path+"recipes*.json")
+    #src_input = spark.read.schema(sp_util.j_schema).json(in_path+"recipes*.json")
+    src_input = extract_data(spark, j_schema, in_path)
 
     prc_src = src_input.withColumn("ingredients", regexp_replace("ingredients", "[\\r\\n]", ". "))\
         .withColumn("recipeYield", regexp_replace("recipeYield", "[\\r\\n]", ". "))\
@@ -51,7 +53,7 @@ if __name__ == '__main__':
 
     # write to csv
     logger.info('Calling function write_to_csv....')
-    sp_util.write_to_csv(out_path, df_final, out_filename)
+    write_to_csv(out_path, df_final, out_filename)
 
     logger.info('main program ends....')
 
