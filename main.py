@@ -34,7 +34,7 @@ if __name__ == '__main__':
 
     # write to csv
     logger.info('Calling function write_to_csv....')
-    #write_to_csv(out_path, df_final, out_filename)
+    write_to_csv(out_path, df_final, out_filename)
 
     logger.info('main program ends....')
 
