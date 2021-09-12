@@ -1,3 +1,6 @@
+'''
+Main module for spark application which calls other utilities required for the job
+'''
 from pyspark.sql.functions import regexp_replace, col, lower, expr, avg, round
 from utilities.common_utils import *
 from utilities.etl_job import *
@@ -14,7 +17,6 @@ out_path = "output\\task_output\\out.csv"
 
 if __name__ == '__main__':
     logger.info('main program starts....')
-    # print('PyCharm')
     logger.info('creating spark session....')
     spark = create_spark_session()
     logger.info('reading from source path....')

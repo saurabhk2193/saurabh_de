@@ -1,3 +1,7 @@
+'''
+This module contains all the utilities commonly used in the program
+'''
+
 import logging
 import os
 import shutil
@@ -6,17 +10,19 @@ from pyspark.sql import SparkSession
 from pyspark.sql.types import StructType, StructField, StringType
 
 
-# Function to create Spark Session
-
-
 def create_spark_session():
+    '''
+    this function is used to create spark session which would be used to communicate with all spark components
+    '''
     spark = SparkSession.builder.master("local").appName("spark_de_test").getOrCreate()
     return spark
 
-    # Utility function to handle logs
-
 
 def get_logger(prg_name):
+    '''
+    This program is used for logging in Spark application.
+    :param prg_name: name of program which would be used to display in the logs
+    '''
     # create logger
     logger = logging.getLogger(prg_name)
     logger.setLevel(logging.DEBUG)
@@ -35,6 +41,13 @@ def get_logger(prg_name):
 
 
 def write_to_csv(output_path, df_final, filename="output"):
+    '''
+    This program is used to save dataframe as csv with given filename.
+    This function renames part file with the given input and delete other files in that folder.
+    :param output_path: path where csv file needs to be saved
+    :param df_final: dataframe which needs to be saved as csv
+    :param filename: input filename with which csv needs to be named
+    '''
     df_final.repartition(1).write.csv(output_path, sep='|')
     list1 = os.listdir(output_path)
     for name in list1:
@@ -46,10 +59,20 @@ def write_to_csv(output_path, df_final, filename="output"):
 
 
 def extract_data(spark, schema, in_path):
+    '''
+    This function extracts data from json file input path and create dataframe on top of it.
+    :param spark: spark session
+    :param schema: schema to be enforced on json structure
+    :param in_path: input file path for json file
+    :return: dataframe created on top of json input
+    '''
     src_input = spark.read.schema(schema).json(in_path + "recipes*.json")
     return src_input
 
-
+'''
+Schema to be enforced on JSON input having 9 columns 
+and have been all set to String type so that all the data could be saved in our source tables.
+'''
 j_schema = StructType([
     StructField("name", StringType()),
     StructField("ingredients", StringType()),
@@ -61,3 +84,14 @@ j_schema = StructType([
     StructField("prepTime", StringType()),
     StructField("description", StringType())
 ])
+
+def create_file_path(exec_date):
+    '''
+    this function creates relative filepath as per execution date.
+    e.g. if date is 20201203, file path created would be /2020/12/03/
+    :param exec_date: job execution date
+    :return: relative filepath
+    '''
+    dt_componets = [exec_date[:4],exec_date[4:6], exec_date[6:]]
+    dt_filepath = '/'+'/'.join(dt_componets)+'/'
+    return dt_filepath
