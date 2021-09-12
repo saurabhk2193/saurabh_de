@@ -1,3 +1,6 @@
+'''
+Main module for spark application which calls other utilities required for the job
+'''
 from pyspark.sql.functions import regexp_replace, col, lower, expr, avg, round
 from utilities.common_utils import *
 from utilities.etl_job import *

@@ -1,3 +1,7 @@
+'''
+This module contains all the utilities commonly used in the program
+'''
+
 import logging
 import os
 import shutil

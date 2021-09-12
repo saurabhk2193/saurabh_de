@@ -1,3 +1,6 @@
+'''
+This module contains all the functions for data transformation and filtering required for the etl job.
+'''
 from pyspark.sql.functions import regexp_replace, col, lower, expr, avg, round
 from utilities.common_utils import *
 from utilities.etl_job import *
