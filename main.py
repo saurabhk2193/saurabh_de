@@ -14,7 +14,6 @@ out_path = "output\\task_output\\out.csv"
 
 if __name__ == '__main__':
     logger.info('main program starts....')
-    # print('PyCharm')
     logger.info('creating spark session....')
     spark = create_spark_session()
     logger.info('reading from source path....')
