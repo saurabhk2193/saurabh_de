@@ -84,3 +84,14 @@ j_schema = StructType([
     StructField("prepTime", StringType()),
     StructField("description", StringType())
 ])
+
+def create_file_path(exec_date):
+    '''
+    this function creates relative filepath as per execution date.
+    e.g. if date is 20201203, file path created would be /2020/12/03/
+    :param exec_date: job execution date
+    :return: relative filepath
+    '''
+    dt_componets = [exec_date[:4],exec_date[4:6], exec_date[6:]]
+    dt_filepath = '/'+'/'.join(dt_componets)+'/'
+    return dt_filepath
